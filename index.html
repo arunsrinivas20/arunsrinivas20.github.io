@@ -13077,7 +13077,7 @@ div#notebook {
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="Analysis-of-Citibike-Data-in-NYC">Analysis of Citibike Data in NYC<a class="anchor-link" href="#Analysis-of-Citibike-Data-in-NYC">&#182;</a></h1><h2 id="Introduction">Introduction<a class="anchor-link" href="#Introduction">&#182;</a></h2><p>The objective of this project is to analyze a large random sample of Citibike data from the years 2013 to 2019. We will look at different trends between location and month, as well as trends in the type of users and so much more. Hopefully after reading this tutorial, you will not only be able to understand more about different statistics/trends about the Citibike data, but also how much Citibike has become integrated in the lives of New Yorkers.</p>
+<h1 id="Analysis-of-Citibike-Data-in-NYC">Analysis of Citibike Data in NYC<a class="anchor-link" href="#Analysis-of-Citibike-Data-in-NYC">&#182;</a></h1><h2 id="Andrew-Li,-Arun-Srinivas,-and-Matt-Wong">Andrew Li, Arun Srinivas, and Matt Wong<a class="anchor-link" href="#Andrew-Li,-Arun-Srinivas,-and-Matt-Wong">&#182;</a></h2><h2 id="Introduction">Introduction<a class="anchor-link" href="#Introduction">&#182;</a></h2><p>The objective of this project is to analyze a large random sample of Citibike data from the years 2013 to 2019. We will look at different trends between location and month, as well as trends in the type of users and so much more. We will also try to build models that can potentially classify some attribute of a ride. Hopefully after reading this tutorial, you will not only be able to understand more about different statistics/trends about the Citibike data, but also how much Citibike has become integrated in the lives of New Yorkers.</p>
 
 </div>
 </div>
@@ -13091,7 +13091,6 @@ div#notebook {
 <li>requests</li>
 <li>pandas</li>
 <li>numpy</li>
-<li>re</li>
 <li>datetime</li>
 <li>statistics</li>
 <li>stats_models</li>
@@ -13110,23 +13109,23 @@ div#notebook {
 <div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="ch">#!pip install folium</span>
-<span class="kn">import</span> <span class="nn">requests</span> <span class="c1">#for get request</span>
-<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span> <span class="c1">#pandas</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span> <span class="c1">#module</span>
-<span class="kn">import</span> <span class="nn">re</span> <span class="c1">#regex</span>
-<span class="kn">from</span> <span class="nn">datetime</span> <span class="k">import</span> <span class="n">datetime</span> <span class="c1">#datetime objects</span>
-<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span> <span class="c1">#for plotting</span>
-<span class="kn">import</span> <span class="nn">folium</span>
-<span class="kn">import</span> <span class="nn">urllib</span>
-<span class="kn">import</span> <span class="nn">zipfile</span>
-<span class="kn">import</span> <span class="nn">statistics</span>
-<span class="kn">from</span> <span class="nn">folium.plugins</span> <span class="k">import</span> <span class="n">HeatMap</span>
-<span class="kn">import</span> <span class="nn">statsmodels.formula.api</span> <span class="k">as</span> <span class="nn">smf</span>
-<span class="kn">import</span> <span class="nn">statsmodels.api</span> <span class="k">as</span> <span class="nn">sm</span>
-<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="k">import</span> <span class="n">train_test_split</span>
-<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="k">import</span> <span class="n">GridSearchCV</span>
-<span class="kn">from</span> <span class="nn">sklearn.neighbors</span> <span class="k">import</span> <span class="n">KNeighborsClassifier</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># !pip install folium</span>
+
+<span class="kn">import</span> <span class="nn">requests</span> <span class="c1"># for get request</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span> <span class="c1"># pandas</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span> <span class="c1"># numpy array operations</span>
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="k">import</span> <span class="n">datetime</span> <span class="c1"># datetime objects</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span> <span class="c1"># for plotting</span>
+<span class="kn">import</span> <span class="nn">folium</span> <span class="c1"># for adding attributes to maps</span>
+<span class="kn">import</span> <span class="nn">urllib</span> <span class="c1"># for retrieving the files from the site</span>
+<span class="kn">import</span> <span class="nn">zipfile</span> <span class="c1"># for extracting and compressing the csv files</span>
+<span class="kn">import</span> <span class="nn">statistics</span> <span class="c1"># for help with standardizing data</span>
+<span class="kn">from</span> <span class="nn">folium.plugins</span> <span class="k">import</span> <span class="n">HeatMap</span> <span class="c1"># for visualizing a heat map for some attributes</span>
+<span class="kn">import</span> <span class="nn">statsmodels.formula.api</span> <span class="k">as</span> <span class="nn">smf</span> <span class="c1"># for modeling with logistic regression</span>
+<span class="kn">import</span> <span class="nn">statsmodels.api</span> <span class="k">as</span> <span class="nn">sm</span> <span class="c1"># for modeling with logistic regression</span>
+<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="k">import</span> <span class="n">train_test_split</span> <span class="c1"># for generating training and testing data splits</span>
+<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="k">import</span> <span class="n">GridSearchCV</span> <span class="c1"># for performing k-fold cross validation</span>
+<span class="kn">from</span> <span class="nn">sklearn.neighbors</span> <span class="k">import</span> <span class="n">KNeighborsClassifier</span> <span class="c1"># for modeling with k-nearest neighbors</span>
 
 <span class="c1"># Ignore warnings</span>
 <span class="kn">import</span> <span class="nn">warnings</span>
@@ -13310,6 +13309,8 @@ div#notebook {
 <li>'birth year': the birth year of the user </li>
 <li>'gender': 0 =&gt; Unknown; 1 =&gt; Male; 2 =&gt; Female</li>
 </ol>
+<p>You can read more about Citibike and the data here:</p>
+<p><a href="https://www.citibikenyc.com/system-data?fbclid=IwAR16Bs8wn3wTthMKWMLYDqfoRShF6BzVZMFPCk665ddfJdmgC3hJJ0mP7tw">https://www.citibikenyc.com/system-data?fbclid=IwAR16Bs8wn3wTthMKWMLYDqfoRShF6BzVZMFPCk665ddfJdmgC3hJJ0mP7tw</a></p>
 
 </div>
 </div>
@@ -13324,6 +13325,10 @@ div#notebook {
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
+<p>For this section, we used the following library from above:</p>
+<ol>
+<li>pandas</li>
+</ol>
 <p>The first thing we wanted to do is remove any incomplete data, especially those that had NaN for locations. For our heatmaps later on, we decided to construct them on the basis of start and end latitudes and longitudes. To do this, we utilizied the pandas <strong>dropna</strong> method to drop all rows that contained NaNs. We felt that this was safer than trying to impute values because, for example, it would be infeasible to replace unknown location values.</p>
 <p>In addition, we noticed that several of the years had <strong>"\N"</strong> as an entry, which indicates that the year in the record is unknown. As a result, we resolved to drop those rows from the data, as we were planning on using those values in the data analysis later on. We only included rows that did not have <strong>"\N"</strong> as a value.</p>
 
@@ -13390,7 +13395,15 @@ div#notebook {
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>We will be plotting our data and analyzing trends that may be significant. Some plots you will see are most popular starting points of trips, comparison between subscriber and customer of Citibikes, the day that most people use the Citibikes, and so much more.</p>
+<p>For this section, we used the following libraries from above:</p>
+<ol>
+<li>pandas</li>
+<li>datetime</li>
+<li>matplotlib</li>
+<li>folium</li>
+<li>numpy</li>
+</ol>
+<p>We will be plotting our data and analyzing trends that may be significant. Some plots you will see are most popular starting points of trips, comparison between subscriber and customer of Citibikes, the day that most people use the Citibikes, an analysis on gender of the user, and so much more.</p>
 
 </div>
 </div>
@@ -13398,6 +13411,7 @@ div#notebook {
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
+<p>We will start off by plotting two simple graphs which will help with some analysis later on. The plots will be Frequency of Start Time of Trip and The Most Popular Days of the Week to ride a Citibike.</p>
 <h3 id="Plotting-Frequency-of-Start-Time-of-Trip">Plotting Frequency of Start Time of Trip<a class="anchor-link" href="#Plotting-Frequency-of-Start-Time-of-Trip">&#182;</a></h3><p>We will be plotting the number of occurrences during the day when people begin their trip.</p>
 
 </div>
@@ -13455,7 +13469,7 @@ div#notebook {
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">week_day</span><span class="o">=</span> <span class="p">{}</span>
 
-<span class="c1"># Fill time_of_day hash table with 0 occurrences of users for each hour</span>
+<span class="c1"># Fill week_day hash table with 0 occurrences of users for each hour</span>
 <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">7</span><span class="p">):</span>
     <span class="n">week_day</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
 
@@ -13498,7 +13512,7 @@ div#notebook {
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># The code below will plot the heatmap of source locations </span>
 <span class="n">map_osm</span> <span class="o">=</span> <span class="n">folium</span><span class="o">.</span><span class="n">Map</span><span class="p">(</span><span class="n">location</span><span class="o">=</span><span class="p">[</span><span class="mf">40.7358</span><span class="p">,</span> <span class="o">-</span><span class="mf">73.9760</span><span class="p">],</span> <span class="n">zoom_start</span><span class="o">=</span><span class="mf">11.5</span><span class="p">)</span>
 
-<span class="c1"># Create HeatMap of the crimes in Baltimore</span>
+<span class="c1"># Create HeatMap of bike trip starting points in NYC</span>
 <span class="n">bikes_df</span><span class="p">[</span><span class="s1">&#39;count&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
 <span class="n">HeatMap</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">bikes_df</span><span class="p">[[</span><span class="s1">&#39;start station latitude&#39;</span><span class="p">,</span> <span class="s1">&#39;start station longitude&#39;</span><span class="p">,</span> <span class="s1">&#39;count&#39;</span><span class="p">]]</span>
         <span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">&#39;start station latitude&#39;</span><span class="p">,</span> <span class="s1">&#39;start station longitude&#39;</span><span class="p">])</span>
@@ -13528,7 +13542,7 @@ div#notebook {
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># The code below will plot the heatmap of destination locations </span>
 <span class="n">map_osm</span> <span class="o">=</span> <span class="n">folium</span><span class="o">.</span><span class="n">Map</span><span class="p">(</span><span class="n">location</span><span class="o">=</span><span class="p">[</span><span class="mf">40.7358</span><span class="p">,</span> <span class="o">-</span><span class="mf">73.9760</span><span class="p">],</span> <span class="n">zoom_start</span><span class="o">=</span><span class="mf">11.5</span><span class="p">)</span>
 
-<span class="c1"># Create HeatMap of the crimes in Baltimore</span>
+<span class="c1"># Create HeatMap of bike trip ending points in NYC</span>
 <span class="n">bikes_df</span><span class="p">[</span><span class="s1">&#39;count&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
 <span class="n">HeatMap</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">bikes_df</span><span class="p">[[</span><span class="s1">&#39;end station latitude&#39;</span><span class="p">,</span> <span class="s1">&#39;end station longitude&#39;</span><span class="p">,</span> <span class="s1">&#39;count&#39;</span><span class="p">]]</span>
         <span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">&#39;end station latitude&#39;</span><span class="p">,</span> <span class="s1">&#39;end station longitude&#39;</span><span class="p">])</span>
@@ -13545,7 +13559,7 @@ div#notebook {
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>By looking at the two maps above, at first glance, we can see that most people start their trips in the heart of Manhattan and Brooklyn. If we zoom in more, we can get a greater sense of where most people start/end their trips from. In the source destination heatmap, we can that around 45th street and the southernest part of Manhattan, there is a good amount of trips that start from the stations near there. Likewise, we can see the same trend in the destination heatmap. We can next plot the most popular starting/ending stations and see them on the map. By doing this, we can single out the most popular stations in NYC and hopefully understand why they are so popular.</p>
+<p>By looking at the two maps above, at first glance, we can see that most people start their trips in the heart of Manhattan and Brooklyn. If we zoom in more, we can get a greater sense of where most people start/end their trips from. In the source destination heatmap, we can that around 45th street and the southernest part of Manhattan, there is a good amount of trips that start from the stations near there. Likewise, we can see the same trend in the destination heatmap. Even though the heatmap can tell us which areas in NYC have a lot of people using the Citibikes, we cannot really infer too much about what is happening in those areas. We need to plot the most popular starting/ending stations and see them on the map. By doing this, we can single out the most popular stations in NYC and hopefully understand why these areas on the heatmap are so concentrated.</p>
 <h4 id="Plotting-Popular-Source/Destination-Stations">Plotting Popular Source/Destination Stations<a class="anchor-link" href="#Plotting-Popular-Source/Destination-Stations">&#182;</a></h4><p>Instead of plotting a heatmap, we can plot the top 10 source stations as well as the top 10 destination stations from all the years 2013-2019. By plotting this, we can see more about where these stations are on the map and see if they correspond to the high concentration of users on the heatmap above.</p>
 
 </div>
@@ -13556,7 +13570,12 @@ div#notebook {
 <div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">stations_start</span> <span class="o">=</span> <span class="p">{}</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># The two hashes below will store the key as the station name and </span>
+<span class="c1"># the value will be the number of occurrences that the key has appeared</span>
+<span class="c1"># in the dataframe</span>
+<span class="c1"># stations_start will store the source station counts</span>
+<span class="c1"># stations_end will store the destination station counts</span>
+<span class="n">stations_start</span> <span class="o">=</span> <span class="p">{}</span>
 <span class="n">stations_end</span> <span class="o">=</span> <span class="p">{}</span>
 
 <span class="c1"># Loop through dataframe and keep count of the number of people who leave </span>
@@ -13575,10 +13594,12 @@ div#notebook {
     <span class="n">stations_end</span><span class="p">[</span><span class="n">station_name_end</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
 
 <span class="c1"># Sort the hash by value and retrieve top 10 source/destination stations</span>
+<span class="c1"># By top 10, we mean the stations that have the most users arriving/departing</span>
+<span class="c1"># from there</span>
 <span class="n">stations_start</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">stations_start</span><span class="o">.</span><span class="n">items</span><span class="p">(),</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span><span class="o">-</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">])[:</span><span class="mi">10</span><span class="p">]</span>
 <span class="n">stations_end</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">stations_end</span><span class="o">.</span><span class="n">items</span><span class="p">(),</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span><span class="o">-</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">])[:</span><span class="mi">10</span><span class="p">]</span>
 
-<span class="c1"># Extract first 10 highest items from hash (stations with most users)</span>
+<span class="c1"># Extract first 10 highest items from each hash</span>
 <span class="c1"># and fill up the x and y lists that we will plot</span>
 <span class="n">top_x_start</span> <span class="o">=</span> <span class="p">[]</span>
 <span class="n">top_y_start</span> <span class="o">=</span> <span class="p">[]</span>
@@ -13592,7 +13613,7 @@ div#notebook {
     <span class="n">top_x_end</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
     <span class="n">top_y_end</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
 
-<span class="c1"># We will now plot histogram of the top 10 stations that people start and end</span>
+<span class="c1"># We will now plot histogram of the top 10 stations that people start and end at</span>
 <span class="n">fig</span><span class="p">,</span> <span class="n">ax1</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
 <span class="n">ax1</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">top_x_start</span><span class="p">,</span> <span class="n">top_y_start</span><span class="p">,</span> <span class="n">align</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">)</span>
 <span class="n">ax1</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Station Names&#39;</span><span class="p">)</span>
@@ -13616,7 +13637,7 @@ div#notebook {
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>After we know the most popular stations, we will also try to analyze the age of the people who go to these popular stations. This will help us understand more about who uses these bikes in these areas. We will output graphs of age groups in these popular stations. The age groups will be teens: 0-18, young adults: 18-35, middle-aged adults:36-55, and older adults: 55+.</p>
+<p>From observation, it looks like that the top 10 most popular stations are the same (except in different order) across both graphs. Now since, we know the most popular stations, we will also try to analyze the age of the people who go to these popular stations. This will help us understand more about who uses these bikes in these areas. We will output graphs of age groups in these popular stations. The age groups will be teens: 0-18, young adults: 18-36, middle-aged adults:36-55, and older adults: 55+. The lower bound on the age is inclusive while the upper bound on the age is exclusive for that range.</p>
 
 </div>
 </div>
@@ -13626,7 +13647,8 @@ div#notebook {
 <div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Add new age column </span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Add new age column calculated by the current dataset year </span>
+<span class="c1"># minus the birth year of the user</span>
 <span class="n">bikes_df</span><span class="p">[</span><span class="s1">&#39;age&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">bikes_df</span><span class="p">[</span><span class="s1">&#39;year&#39;</span><span class="p">]</span><span class="o">-</span><span class="n">bikes_df</span><span class="p">[</span><span class="s1">&#39;birth year&#39;</span><span class="p">]</span>
 
 <span class="c1"># The variables below will correspond to the subplot matrix </span>
@@ -13634,11 +13656,21 @@ div#notebook {
 <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
 <span class="n">j</span> <span class="o">=</span> <span class="mi">0</span>
 
+<span class="c1"># We will be creating 10 subplots where each plot represents the</span>
+<span class="c1"># amount of users at that station vs. the age range (defined above) </span>
 <span class="n">fig</span><span class="p">,</span> <span class="n">ax1</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mi">40</span><span class="p">))</span>
+
+<span class="c1"># For each popular station</span>
 <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">top_x_start</span><span class="p">:</span>
+    <span class="c1"># Retrieve subset of dataframe where the starting station name matches the </span>
+    <span class="c1"># current station name we are making plot for    </span>
     <span class="n">current_subset</span> <span class="o">=</span> <span class="n">bikes_df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">bikes_df</span><span class="p">[</span><span class="s1">&#39;start station name&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">name</span><span class="p">]</span>
+    
+    <span class="c1"># Initialize hash where key is the age group and the value is the count for each </span>
+    <span class="c1"># age group for the current station we are making plot for     </span>
     <span class="n">age_hash_start</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;teens&#39;</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;young adults&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;middle-aged adults&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;older adults&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">}</span>
     
+    <span class="c1"># Load hash</span>
     <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">current_subset</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
         <span class="n">user_age</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;age&#39;</span><span class="p">]</span>
         <span class="k">if</span> <span class="n">user_age</span> <span class="o">&lt;</span> <span class="mi">18</span><span class="p">:</span>
@@ -13650,9 +13682,15 @@ div#notebook {
         <span class="k">else</span><span class="p">:</span>
             <span class="n">age_hash_start</span><span class="p">[</span><span class="s1">&#39;older adults&#39;</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
             
+    <span class="c1"># Retrieve subset of dataframe where the ending station name matches the </span>
+    <span class="c1"># current station name we are making plot for    </span>
     <span class="n">current_subset</span> <span class="o">=</span> <span class="n">bikes_df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">bikes_df</span><span class="p">[</span><span class="s1">&#39;end station name&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">name</span><span class="p">]</span>
+    
+    <span class="c1"># Reset age group hash because now we will be treating the current station</span>
+    <span class="c1"># name as the destination station</span>
     <span class="n">age_hash_end</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;teens&#39;</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;young adults&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;middle-aged adults&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;older adults&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">}</span>
     
+    <span class="c1"># Load hash</span>
     <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">current_subset</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
         <span class="n">user_age</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;age&#39;</span><span class="p">]</span>
         <span class="k">if</span> <span class="n">user_age</span> <span class="o">&lt;</span> <span class="mi">18</span><span class="p">:</span>
@@ -13664,8 +13702,11 @@ div#notebook {
         <span class="k">else</span><span class="p">:</span>
             <span class="n">age_hash_end</span><span class="p">[</span><span class="s1">&#39;older adults&#39;</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
     
+    <span class="c1"># Graph the number of users for each age group for current station. Each age group </span>
+    <span class="c1"># will have two bars: one bar will be the number of users treating the current </span>
+    <span class="c1"># station as a start station and the other bar will be the number of users treating</span>
+    <span class="c1"># the current station as an end station</span>
     <span class="n">ind</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span> 
-    
     <span class="n">ax</span> <span class="o">=</span> <span class="n">ax1</span><span class="p">[</span><span class="n">i</span> <span class="o">%</span> <span class="mi">5</span><span class="p">,</span> <span class="n">j</span> <span class="o">%</span> <span class="mi">2</span><span class="p">]</span>
     <span class="n">ax</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">ind</span><span class="p">,</span> <span class="nb">list</span><span class="p">(</span><span class="n">age_hash_start</span><span class="o">.</span><span class="n">values</span><span class="p">()),</span> <span class="o">.</span><span class="mi">35</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Source Station&#39;</span><span class="p">,</span> <span class="n">align</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">)</span>
     <span class="n">ax</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">ind</span><span class="o">+.</span><span class="mi">35</span><span class="p">,</span> <span class="nb">list</span><span class="p">(</span><span class="n">age_hash_end</span><span class="o">.</span><span class="n">values</span><span class="p">()),</span> <span class="o">.</span><span class="mi">35</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Destination Station&#39;</span><span class="p">,</span> <span class="n">align</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">)</span>
@@ -13677,7 +13718,8 @@ div#notebook {
     <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
     <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
     <span class="n">j</span> <span class="o">+=</span> <span class="mi">1</span>
-    
+
+<span class="c1"># Format plots to make it look nicer</span>
 <span class="n">fig</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
 <span class="n">fig</span><span class="o">.</span><span class="n">subplots_adjust</span><span class="p">(</span><span class="n">hspace</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span>
     
@@ -13691,8 +13733,8 @@ div#notebook {
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>We can see that different age groups appear at different stations more than other age groups. Keep this in mind as it will help in our analysis.</p>
-<p>Now we can see what the most popular stations are in the histogram as well as the age groups that appear most at the station, but now let's see where they are on the map. By doing this, we can look at the stations and try to analyze the environment around that station so that we can understand why that station is so popular. First, we will graph the most popular source stations below. If you click on a point on the map, it will display the name of the Citibike station.</p>
+<p>By looking at the 10 graphs comparing the number of users to the age group for each popular station, we can see that age groups fluctuate in different stations. For example, in Pershing Square North, we can see that the dominating age group is middle-aged adults while in Lafayette St &amp; E 8 St, the dominating age group is young-adults. Keep this in mind as it will help in our analysis.</p>
+<p>Now we can see what the most popular stations are in the histogram as well as the age groups that appear most at these stations, but now let's see where they are on the map. By doing this, we can look at the stations and try to analyze the environment around that station so that we can understand why that station is so popular. Since the top 10 source and destination stations are the same, we will only provide one map. If you click on a point on the map, it will display the name of the Citibike station.</p>
 
 </div>
 </div>
@@ -13731,47 +13773,14 @@ div#notebook {
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Likewise, we will graph the top 10 destination stations below</p>
-
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">map_osm</span> <span class="o">=</span> <span class="n">folium</span><span class="o">.</span><span class="n">Map</span><span class="p">(</span><span class="n">location</span><span class="o">=</span><span class="p">[</span><span class="mf">40.7300</span><span class="p">,</span> <span class="o">-</span><span class="mf">74.0007</span><span class="p">],</span> <span class="n">zoom_start</span><span class="o">=</span><span class="mi">13</span><span class="p">)</span>
-
-<span class="c1"># Add points to map to show most popular destination stations</span>
-<span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">top_x_end</span><span class="p">:</span>
-    <span class="c1"># Retrieve the latitude and longitude of that location in dataframe     </span>
-    <span class="n">row</span> <span class="o">=</span> <span class="n">bikes_df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">bikes_df</span><span class="p">[</span><span class="s1">&#39;end station name&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-    <span class="n">lat</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;end station latitude&#39;</span><span class="p">]</span>
-    <span class="n">long</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;end station longitude&#39;</span><span class="p">]</span>
-    
-    <span class="c1"># Add a circle indicating the location in NYC      </span>
-    <span class="n">folium</span><span class="o">.</span><span class="n">Circle</span><span class="p">(</span>
-        <span class="n">radius</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span>
-        <span class="n">location</span><span class="o">=</span><span class="p">[</span><span class="n">lat</span><span class="p">,</span> <span class="n">long</span><span class="p">],</span>
-        <span class="n">popup</span><span class="o">=</span><span class="n">name</span><span class="p">,</span>
-        <span class="n">color</span><span class="o">=</span><span class="s1">&#39;blue&#39;</span><span class="p">,</span>
-        <span class="n">fill</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-    <span class="p">)</span><span class="o">.</span><span class="n">add_to</span><span class="p">(</span><span class="n">map_osm</span><span class="p">)</span>
-
-<span class="n">map_osm</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>By looking at the graphs above, we can see that the most popular source and destination stations are the same and all of them are located in Manhattan. Also, we can observe that most of these locations are located near very busy bus/metro stations. For example, we can see that the most popular start station (Pershing Square North) is located right next to Grand Central Terminal which is one of the major metro stations in NYC. Likewise, there are Citibike stations right next to Port Authority Bus Terminal and 34th Street Penn Station. These two bus/metro stations are also very busy and popular stations for New Yorkers. Looking at our age range graphs for these stations, we can see that they are mostly middle-aged adults. We can infer that most Citibike users in this area use their bike to get to these stations either for work or travel or they leave from these stations after coming back from work.</p>
-<p>If we look at the downtown stations, Lafayette St &amp; E 8 St and Broadway &amp; E 14 St, we can see that these Citibike stations are near NYU, a university. By looking at our age range graphs, we can observe that most of the users, are young adults, college students. We can infer that most Citibike users in this area are college students who use the bikes to get to class or dorms.</p>
+<p>By looking at the graph above, we can see that all of the top 10 stations are located in Manhattan. Also, we can observe that most of these locations are located near very busy bus/metro stations. For example, we can see that the most popular start station (Pershing Square North) is located right next to Grand Central Terminal which is one of the major metro stations in NYC. Likewise, there are Citibike stations right next to Port Authority Bus Terminal and 34th Street Penn Station. These two bus/metro stations are also very busy and popular stations for New Yorkers. Looking at our age range graphs for these stations, we can see that they are mostly middle-aged adults. We could probably infer that most Citibike users in this area use their bike to get to these stations either for work or travel or they leave from these stations after coming back from work.</p>
+<p>You can read more about Grand Central Terminal here:
+<a href="https://www.grandcentralterminal.com/about/">https://www.grandcentralterminal.com/about/</a></p>
+<p>You can read more about Penn Station here:
+<a href="https://en.wikipedia.org/wiki/Pennsylvania_Station_(New_York_City">https://en.wikipedia.org/wiki/Pennsylvania_Station_(New_York_City</a>)</p>
+<p>If we look at the downtown stations, Lafayette St &amp; E 8 St and Broadway &amp; E 14 St, we can see that these Citibike stations are near NYU, a university. By looking at our age range graphs, we can observe that most of the users, are young adults, college students and people who are just starting their careers. If we look at the two stations above those, Broadway &amp; E 22 St and W 21 St &amp; 6 Ave, we can see that those are located near/in the Flatiron District. Baruch College is in the area as well. Therefore, we can see a lot of college students/young adults in this area. We could probably infer that most Citibike users in this area are college students who use the bikes to get to class, dorms, and even restaurants.</p>
+<p>You can read more about Flatiron District here:
+<a href="https://en.wikipedia.org/wiki/Flatiron_District">https://en.wikipedia.org/wiki/Flatiron_District</a></p>
 
 </div>
 </div>
@@ -13780,6 +13789,22 @@ div#notebook {
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h3 id="Comparing-Habits-Between-Subscribers-and-Customers-(day-pass-and-single-ride-users)">Comparing Habits Between Subscribers and Customers (day-pass and single-ride users)<a class="anchor-link" href="#Comparing-Habits-Between-Subscribers-and-Customers-(day-pass-and-single-ride-users)">&#182;</a></h3>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>For this section, we used the following libraries from above:</p>
+<ol>
+<li>pandas</li>
+<li>datetime</li>
+<li>matplotlib</li>
+<li>statistics</li>
+<li>folium</li>
+<li>numpy</li>
+</ol>
+
 </div>
 </div>
 </div>
@@ -14105,7 +14130,7 @@ Through the business days, subscriber usage increases and non-subscriber usage d
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="Most-popular-Stops-for-Subscribers-and-Non-subscribers">Most popular Stops for Subscribers and Non-subscribers<a class="anchor-link" href="#Most-popular-Stops-for-Subscribers-and-Non-subscribers">&#182;</a></h3>
+<h3 id="Most-Popular-Stops-for-Subscribers-and-Non-subscribers">Most Popular Stops for Subscribers and Non-subscribers<a class="anchor-link" href="#Most-Popular-Stops-for-Subscribers-and-Non-subscribers">&#182;</a></h3>
 </div>
 </div>
 </div>
@@ -14217,8 +14242,15 @@ Through the business days, subscriber usage increases and non-subscriber usage d
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="Analysis-of-Gender-on-the-Data">Analysis of Gender on the Data<a class="anchor-link" href="#Analysis-of-Gender-on-the-Data">&#182;</a></h3><p>The goal of this section is trying to see if we can determine patterns for gender. For example, one of the things we studied was the density of bikeshare start positions and see where each gender is most concentrated. We make conclusions based which areas tend to be the most concentrated by gender. The first thing we did was segregate the data by gender, making on dataframe for males and one for females. One thing to note is that there were 3 gender classifications, with 0 representing unknown. At first, we wanted to include it, as it could be representing genders other than males and females, but we realized that it may also mean that the gender attribute was purely unknown. As a result of this ambiguity, we resolve to exclude unknown from our analysis.</p>
+<h3 id="Gender-Patterns-within-the-Data">Gender Patterns within the Data<a class="anchor-link" href="#Gender-Patterns-within-the-Data">&#182;</a></h3><p>The goal of this section is trying to see if we can determine patterns for gender. For example, one of the things we studied was the density of bikeshare start positions and see where each gender is most concentrated. We make conclusions based which areas tend to be the most concentrated by gender. The first thing we did was segregate the data by gender, making on dataframe for males and one for females. One thing to note is that there were 3 gender classifications, with 0 representing unknown. At first, we wanted to include it, as it could be representing genders other than males and females, but we realized that it may also mean that the gender attribute was purely unknown. As a result of this ambiguity, we resolve to exclude unknown from our analysis.</p>
 
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h4 id="Heatmap-of-Trips-for-Males-and-Females">Heatmap of Trips for Males and Females<a class="anchor-link" href="#Heatmap-of-Trips-for-Males-and-Females">&#182;</a></h4>
 </div>
 </div>
 </div>
@@ -14295,7 +14327,13 @@ Through the business days, subscriber usage increases and non-subscriber usage d
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Analysis-of-Models-Predicting-Gender">Analysis of Models Predicting Gender<a class="anchor-link" href="#Analysis-of-Models-Predicting-Gender">&#182;</a></h2><h3 id="Generating-Models-to-Predict-Gender">Generating Models to Predict Gender<a class="anchor-link" href="#Generating-Models-to-Predict-Gender">&#182;</a></h3><p>The goal of this section is to figure out whether we can accurate predict the gender of a potential. As a result, we set out to produce a couple of models and compare them as well.</p>
+<h2 id="Modeling:-Creating-Models-to-Predict-the-Gender-of-a-Rider">Modeling: Creating Models to Predict the Gender of a Rider<a class="anchor-link" href="#Modeling:-Creating-Models-to-Predict-the-Gender-of-a-Rider">&#182;</a></h2><p>For this section, we used the following libraries from above:</p>
+<ol>
+<li>pandas</li>
+<li>sklearn</li>
+<li>statsmodels</li>
+</ol>
+<h3 id="Generating-Models-to-Predict-Gender">Generating Models to Predict Gender<a class="anchor-link" href="#Generating-Models-to-Predict-Gender">&#182;</a></h3><p>The goal of this section is to figure out whether we can accurate predict the gender of a potential. As a result, we set out to produce a couple of models and compare them as well.</p>
 <p>Creating the heat maps helped us figure out how to determine the our predictors for the logistic regression model. The goal of our model was to see if we could predict the gender, male or female, based on a few factors regarding trip details. Originally, we wanted to include the latitude and longitude in the predictors, but we realized that it was hard to interpret that in the model. Latitude increases going from south to north, while longitude increases going west to east. Despite these facts, we recognized that, as we were centering on a specific region, New York City, there would be very little variation amongst the values. They were very close together, so, for example, a rider starting their trip at a longitude that was 0.01 greater than that of another rider did not seem to be that signifcant in predicting the gender of a rider. While this may not be convincing alone, our heatmaps above defintely confirm this observation. As the heat maps are nearly identical, we see that a difference in latitude and longitude will not be a great determinant in predicting the gender of a potential rider.</p>
 <p>As a result, we decided to create models for predicting gender, based on <strong>starttime, duration, usertype, and age</strong>.</p>
 <p>The first thing we will do is prepare our data to be modeled. This involves converting values, so that it can be easy to interpret.</p>
@@ -14450,7 +14488,7 @@ We standardized all the predictors this way and created our dataframe.</p>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h5 id="Logistic-Regression">Logistic Regression<a class="anchor-link" href="#Logistic-Regression">&#182;</a></h5><p>Now we will generate our model for logistic regression on training data set we created above.</p>
+<h4 id="Logistic-Regression">Logistic Regression<a class="anchor-link" href="#Logistic-Regression">&#182;</a></h4><p>Now we will generate our model for logistic regression on training data set we created above.</p>
 
 </div>
 </div>
@@ -14484,13 +14522,13 @@ We standardized all the predictors this way and created our dataframe.</p>
 <p>From the logistic regression model we can analyze the coefficients to see determine how they affect the classification of gender. Please note that repeated runs of the training and testing data set splitting, might yield different fits. When we fitted the model repeated times in this fashion, we saw that the majority of models had all significant predictors (near-zero p-values). In the few exceptions, we saw that starttime_sec and, rarely, tripduration were insignificant in explaining the response. We will assume, for the purposes of this analysis, that all the predictors were significant. We performed z-tests (null hypothesis is that the predictor is insignifcant, when accounting for other predictors, and the alternative hypothesis is that the predictor is significant, when accounting for other predictors) on all of them and found that their associated p-values were all less than a significance level of alpha=0.5 (rejected the null hypothesis each time). With the same reasoning, coefficients also change in every rerun of the model. With every model, we saw that intercept, starttime_sec, usertype_code, and age were all negative, while the coefficient of tripduration was positive. We will, as a result, assume that their signs stay the same for the purposes of this analysis.</p>
 <p>Each of the interpretions of the coefficients are as follows:</p>
 <ol>
-<li><p>starttime_sec: For every additional second later in the day, on average, the odds of a bike rider being classified as female decrease by factor of e^(-0.0214) = 0.979, while holding other predictors fixed. This coefficient is negative, which indicates that it generally decreases the probability of a rider being classified as female. However, the coefficient is near-zero in magnitude, indicating that it has little influence on the probability of a rider being classified as female.</p>
+<li><p><strong>starttime_sec</strong>: For every additional second later in the day, on average, the odds of a bike rider being classified as female decrease by factor of e^(-0.0214) = 0.979, while holding other predictors fixed. This coefficient is negative, which indicates that it generally decreases the probability of a rider being classified as female. However, the coefficient is near-zero in magnitude, indicating that it has little influence on the probability of a rider being classified as female.</p>
 </li>
-<li><p>tripduration: For every additional second in trip duration, on average, the odds of a bike rider being classified as female increase by factor of e^(0.4521) = 1.572, while holding other predictors fixed. This coefficient is positive, which indicates that it generally increases the probability of a rider being classified as female. The coefficient is larger in magnitude, relative to the other coefficients, indicating that it has a large influence on the probability of a rider being classified as female.</p>
+<li><p><strong>tripduration</strong>: For every additional second in trip duration, on average, the odds of a bike rider being classified as female increase by factor of e^(0.4521) = 1.572, while holding other predictors fixed. This coefficient is positive, which indicates that it generally increases the probability of a rider being classified as female. The coefficient is larger in magnitude, relative to the other coefficients, indicating that it has a large influence on the probability of a rider being classified as female.</p>
 </li>
-<li><p>usertype_code: Being a Subscriber, on average, the odds of a bike rider being classified as female decrease by factor of e^(-0.4878) = 0.614, when compared to Customers, while holding other predictors fixed. This coefficient is negative, which indicates that it generally decreases the probability of a rider being classified as female. The coefficient is larger in magnitude, relative to the other coefficients, indicating that it has a large influence on the probability of a rider being classified as female.</p>
+<li><p><strong>usertype_code</strong>: Being a Subscriber, on average, the odds of a bike rider being classified as female decrease by factor of e^(-0.4878) = 0.614, when compared to Customers, while holding other predictors fixed. This coefficient is negative, which indicates that it generally decreases the probability of a rider being classified as female. The coefficient is larger in magnitude, relative to the other coefficients, indicating that it has a large influence on the probability of a rider being classified as female.</p>
 </li>
-<li><p>age: For every additional year, on average, the odds of a bike rider being classified as female increase by factor of e^(-0.1217) = 0.885, while holding other predictors fixed. This coefficient is negative, which indicates that it generally decreases the probability of a rider being classified as female. The coefficient is not as large when compared to (2) and (3) in magnitude, relative to the other coefficients, indicating that it has a decent influence on the probability of a rider being classified as female.</p>
+<li><p><strong>age</strong>: For every additional year, on average, the odds of a bike rider being classified as female increase by factor of e^(-0.1217) = 0.885, while holding other predictors fixed. This coefficient is negative, which indicates that it generally decreases the probability of a rider being classified as female. The coefficient is not as large when compared to (2) and (3) in magnitude, relative to the other coefficients, indicating that it has a decent influence on the probability of a rider being classified as female.</p>
 </li>
 </ol>
 
@@ -14500,7 +14538,7 @@ We standardized all the predictors this way and created our dataframe.</p>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h5 id="Performance-of-Logistic-Regression">Performance of Logistic Regression<a class="anchor-link" href="#Performance-of-Logistic-Regression">&#182;</a></h5><p>To test the accuracy of our model, we evaluated its performance on the test data set we sectioned out earlier. With those probabilites, we then classified each predicted observation, with above 0.5 being classified as female and below being classified as male. We then counted the number of matching observations and then divided that by the total number of observations.</p>
+<h4 id="Performance-of-Logistic-Regression">Performance of Logistic Regression<a class="anchor-link" href="#Performance-of-Logistic-Regression">&#182;</a></h4><p>To test the accuracy of our model, we evaluated its performance on the test data set we sectioned out earlier. With those probabilites, we then classified each predicted observation, with above 0.5 being classified as female and below being classified as male. We then counted the number of matching observations and then divided that by the total number of observations.</p>
 
 </div>
 </div>
@@ -14542,7 +14580,7 @@ We standardized all the predictors this way and created our dataframe.</p>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h5 id="kNN">kNN<a class="anchor-link" href="#kNN">&#182;</a></h5><p>Now we will generate our k-nearest neigbors (kNN). We will use libraries to help with corss validation procedure, so that we can generate a tree with optimal number of neighbors. To do this we will utilize sklearn's <strong>DecisionTreeClassifier</strong> object to build the tree and sklearn's <strong>GridSearchCV</strong> object from the model_selection module to perform the 10-fold cross-validation procedure. We will perform this on the training data.</p>
+<h4 id="k-Nearest-Neighbors-(kNN)">k-Nearest Neighbors (kNN)<a class="anchor-link" href="#k-Nearest-Neighbors-(kNN)">&#182;</a></h4><p>Now we will generate our k-nearest neigbors (kNN). We will use libraries to help with corss validation procedure, so that we can generate a tree with optimal number of neighbors. To do this we will utilize sklearn's <strong>DecisionTreeClassifier</strong> object to build the tree and sklearn's <strong>GridSearchCV</strong> object from the model_selection module to perform the 10-fold cross-validation procedure. We will perform this on the training data.</p>
 <p>From constructing the kNN model, we first had to tune the hyperparameter, in this case the number of neighbors. To do so, we performed a 10-fold cross validation procedure and tested parameters from 2 to 10, inclusive. We found that the optimal number of neighbors was 8. However, please note that this value may tune differently on repeated runs.</p>
 
 </div>
@@ -14582,7 +14620,7 @@ We standardized all the predictors this way and created our dataframe.</p>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h5 id="Performance-of-kNN">Performance of kNN<a class="anchor-link" href="#Performance-of-kNN">&#182;</a></h5><p>To test the accuracy of our model, we evaluated its performance on the test data set we sectioned out earlier. We then counted the number of matching observations and then divided that by the total number of observations.</p>
+<h4 id="Performance-of-kNN">Performance of kNN<a class="anchor-link" href="#Performance-of-kNN">&#182;</a></h4><p>To test the accuracy of our model, we evaluated its performance on the test data set we sectioned out earlier. We then counted the number of matching observations and then divided that by the total number of observations.</p>
 
 </div>
 </div>
@@ -14616,7 +14654,7 @@ We standardized all the predictors this way and created our dataframe.</p>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>From comparing the predictive capabilities of both of the logistic regression and kNN models, we found that both of them were quite accurate in predicting whether a potenital rider, given their age, duration of trip, start time of trip in the day, and user type. In general, these accuracies are bound to change, but we found that logistic regression did slightly better in its performance.</p>
+<p>From comparing the predictive capabilities of both of the logistic regression and kNN models, we found that both of them were quite accurate in predicting whether a potenital rider, given their age, duration of trip, start time of trip in the day, and user type. In general, these accuracies are bound to change, but we found that logistic regression did slightly better in its performance. We displayed the accuracy of each model on the test data set in the output of the above cells.</p>
 <p>From the logistic model, we can also determine which predictors are most important in predicting the gender of a rider. From the high coefficients of trip duration and user_type, we would say that these predictors are the most important and influential in predicting the gender of a rider. Being a Subscriber significantly decreases odds, on average, of predicting a rider to be female, when accounting for other predictors. Having a higher trip duration significantly increase odds, on average, of predicting a rider to be female, when accounting for other predictors.</p>
 <p>The nature of the relationship that we are trying to classify is inherently ambiguous, but these models do show that there is some potential in a model being able to classify a rider as male of female correctly.</p>
 
@@ -14626,9 +14664,22 @@ We standardized all the predictors this way and created our dataframe.</p>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Insight-and-Policy-Decisions">Insight and Policy Decisions<a class="anchor-link" href="#Insight-and-Policy-Decisions">&#182;</a></h2>
+<h2 id="Insight-and-Conclusions">Insight and Conclusions<a class="anchor-link" href="#Insight-and-Conclusions">&#182;</a></h2>
 </div>
 </div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span> 
+</pre></div>
+
+    </div>
+</div>
+</div>
+
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
